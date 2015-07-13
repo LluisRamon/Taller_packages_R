@@ -184,16 +184,16 @@ NULL
 
 * Crear una carpeta `\vignettes`
 * Opció vignettes amb Sweave `.Rnw`
-* Opció vignettes amb Rmarkdown `.Rmd`
+* Opció vignettes amb [Rmarkdown i knitr](http://yihui.name/knitr/demo/vignette/) `.Rmd`:
     * Cal afegir `VignetteBuilder: knitr` a DESCRIPTION
+    * Cal afegir `Suggests: knitr` a DESCRIPTION 
     * Cal afegir el següent codi al `.Rmd`
-* 
 ```{r, eval = FALSE}
-<!--
-%\VignetteEngine{knitr::rmarkdown}
--->
+<!-- %\VignetteEngine{knitr::rmarkdown}
+     %\VignetteIndexEntry{tutorial_name} -->
 ```
-
+* Fer un `Build Source` -> Install `package_name.tar.gz`.
+* `browseVignettes(package = 'package_name')`
 
 <!-- http://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission
 Sembla que has de fer un source i instal·lar-lo manualment

@@ -315,18 +315,22 @@ NULL</pre>
 <ul>
 <li>Crear una carpeta <code>\vignettes</code></li>
 <li>Opció vignettes amb Sweave <code>.Rnw</code></li>
-<li>Opció vignettes amb Rmarkdown <code>.Rmd</code>
+<li>Opció vignettes amb <a href='http://yihui.name/knitr/demo/vignette/' title=''>Rmarkdown i knitr</a> <code>.Rmd</code>:
 
 <ul>
 <li>Cal afegir <code>VignetteBuilder: knitr</code> a DESCRIPTION</li>
+<li>Cal afegir <code>Suggests: knitr</code> a DESCRIPTION</li>
 <li>Cal afegir el següent codi al <code>.Rmd</code></li>
 </ul></li>
-<li></li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>&lt;!--
-%\VignetteEngine{knitr::rmarkdown}
---&gt;</pre>
+<pre class = 'prettyprint lang-r'>&lt;!-- %\VignetteEngine{knitr::rmarkdown}
+     %\VignetteIndexEntry{tutorial_name} --&gt;</pre>
+
+<ul>
+<li>Fer un <code>Build Source</code> -&gt; Install <code>package_name.tar.gz</code>.</li>
+<li><code>browseVignettes(package = &#39;package_name&#39;)</code></li>
+</ul>
 
 <!-- http://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission
 Sembla que has de fer un source i instal·lar-lo manualment
