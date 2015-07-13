@@ -20,6 +20,7 @@ output: ioslides_presentation
 * [R packages, H. Wickham](http://r-pkgs.had.co.nz/)
 * [Developing Packages with RStudio](http://www.rstudio.com/ide/docs/packages/overview)
 * [Crear packages de forma fàcil amb RStudio](https://rugbcn.wordpress.com/2013/04/28/crear-packages-de-forma-facil-amb-rstudio-2/)
+* [Package Development Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/06/devtools-cheatsheet.pdf)
 
 ## Les parts bàsiques
 
