@@ -1,0 +1,277 @@
+---
+title: "Taller de crear packages"
+author: "Lluís Ramon"
+date: "9 de juliol de 2015"
+output: ioslides_presentation
+---
+
+## Índex
+
+* Parts bàsiques
+* Documentació amb Roxygen2
+* Afegir dades, NEWS, vignette
+* Incloure codi Java i/o C++
+* Test amb el package testthat
+* Control de versions amb git i github
+
+## Referències
+
+* [Writing R Extensions](http://cran.r-project.org/doc/manuals/r-release/R-exts.html) (_help.start()_)
+* [R packages, H. Wickham](http://r-pkgs.had.co.nz/)
+* [Developing Packages with RStudio](http://www.rstudio.com/ide/docs/packages/overview)
+* [Crear packages de forma fàcil amb RStudio](https://rugbcn.wordpress.com/2013/04/28/crear-packages-de-forma-facil-amb-rstudio-2/)
+
+## Les parts bàsiques
+
+* __DESCRIPTION__: Informació bàsica del package
+* __NAMESPACE__: Gestió de les funcions a importar o exportar
+* __\\man__: On s'inclou la documentació
+* __\\R__: On s'inclouen les funcions
+
+## El fitxer __DESCRIPTION__
+
+<table summary="" class="cartouche" border="1"><tr><td>
+<div class="smallexample">
+<pre class="smallexample">
+Package: rugbcn
+Version: 0.0-1
+Date: 2015-07-09
+Title: El primer package a rugbcn
+Authors@R: c(person(&quot;Lluis&quot;, &quot;Ramon&quot;, role = c(&quot;aut&quot;, &quot;cre&quot;),
+		     email = &quot;lluis.ramonr@some.domain.net&quot;),
+	      person(&quot;Aleix&quot;, &quot;Ruiz de Villa&quot;, role = &quot;aut&quot;))
+Author: Lluis Ramon [aut, cre],
+  Aleix Ruiz de Villa [aut]
+Maintainer: Lluis Ramon &lt;lluis.ramonr@some.domain.net&gt;
+Depends: R (&gt;= 3.1.0), ggplot2
+Imports: ggmap
+Suggests: MASS
+Description: Explicacio mes detallada del que fa el teu package. 
+             Perque pot ser util, que permet fer i com.
+License: GPL (&gt;= 2)
+</pre></div>
+</td></tr></table>
+
+## El fitxer __NAMESPACE__
+
+<!-- Prior to R 2.14.0, namespaces were optional in packages: a default namespace was generated on installation in 2.14.x and 2.15.x. As from 3.0.0 a namespace is mandatory. -->
+
+Gestió de les funcions a importar o exportar
+
+* `export(function)`
+* `import(pkg)`
+* `importFrom(pkg, function)`
+
+## Els fitxers de documentació
+
+* Acaben amb ```.Rd``` _(R documentation)_
+* Llenguatge de marques propi semblant a LaTeX
+* Tags per cada secció amb el nom
+    * `\name`, `\alias`, `\title`, `\arguments`, 
+    * `\description`, `\examples`, `\usage`
+* Per exemple: `\title`_{Quadrat d'un vector d'elements}_
+* Es simplifica amb el package Roxygen2
+
+## Crear un package amb RStudio
+
+- File -> New Project -> New Directory -> R Package Type
+
+<img src = https://support.rstudio.com/hc/en-us/article_attachments/201330058/Screen_Shot_2015-03-19_at_3.37.17_PM.png width = "400">
+
+## Exercici
+
+* Crear el primer package amb un RStudio project
+* Documentar el DESCRIPTION. Afegir packages a Import i Depends.
+* Afegir una funció d'R
+* Documentar la funció
+* Actualitzar el NAMESPACE
+* Build del package. Prova les funcions i mira la documentació.
+* __Extra__: Executa __search()__. Hi ha els packages d'Imports o Depends? 
+
+## Package Roxygen
+
+* Documentació junt amb el codi
+    + Menys incoherències entre documentació i codi
+    + Més fàcil de mantenir la documentació
+* Evita deixar tota la documentació al final
+* Actualitza automàticament el NAMESPACE
+
+## Funcionament
+
+* La documentació va precedida per ```#'```
+* Els tags del ```.Rd``` tenen equivalents de l'estil ```@tag```
+* Per exemple, `\description` passa a ser `@description`
+* Configurar RStudio per generar documentació amb Roxygen2
+* Build -> Configure Build Tools
+
+<img src = https://support.rstudio.com/hc/en-us/article_attachments/201405067/Screen_Shot_2015-03-26_at_3.23.55_PM.png width = "400">
+
+## Funcions comunes
+
+* `@name` nom de la funció
+* `@title` títol de la funció
+* `@param` nom i explicació dels paràmetres
+* `@author` autor de la funció
+* `@note` aclariments o informació complementaria de la funció
+* `@export` funció a exportar al NAMESPACE
+* `@import` funcions o packages a importar al NAMESPACE
+* `@examples` exemples del funcionament de la funció
+* `@return` explicació del resultat de la funció
+
+## Caràcters i text especials
+
+Relacionats amb tag de roxygen, comentari o escapament de $\\LaTeX$
+
+* Per afegir `@` usar `@@`.
+* Per afegir `%` usar `\% `.
+* Per afegir `\` usar `\\`.
+
+Incloure negreta, enllaços, codi, etc.
+
+* Per exemple: `\bold`, `\code`, `\url`, etc
+* Totes les comandes al [Writing R Extensions:Marking-text](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#Marking-text)
+
+## Data
+
+* Carpeta nova `\data`
+* Afegir dades en un `.RData`, `.txt`, `.csv`, `.R`
+* Recomanable fer servir `.RData`
+* Es carreguen amb la funció `data`
+* Per exemple: `data("mtcars")`
+
+## Documentar les dades
+
+* Afegir-ho com a fitxer codi R
+* Acabar-ho amb el nom del dataset. Abans `@docType` data
+* No afegir `@export`
+
+```{r, eval = FALSE}
+#' Mil primers quadrats
+#' 
+#' Dataset que conte els primers mil quadrats
+#' 
+#' @format Un vector de longitud mil
+#' @source \url{http://www.origen.milQuadrats.cat}
+"milQuadrats"
+```
+
+## Documentar el package
+
+* No obligatori però recomanable
+* Crear un fitxer `nom-package.R`
+* Afegir `@docType` package
+* Afegir `NULL` al final
+* Lloc adequat per incloure `imports`
+
+```{r, eval = FALSE}
+#' Quadrat
+#' 
+#' @name quadrat
+#' @import ggplot2
+#' @docType package
+#' @aliases quadrat quadrat-package
+NULL
+```
+
+
+## El fitxer NEWS
+
+* Afegir fitxer amb nom NEWS a l'arrel
+* Sense extensió
+* Utilitzar la funció `news(package = "pkgName")`
+
+## Vignette
+
+* Crear una carpeta `\vignettes`
+* Opció vignettes amb Sweave `.Rnw`
+* Opció vignettes amb Rmarkdown `.Rmd`
+    * Cal afegir `VignetteBuilder: knitr` a DESCRIPTION
+    * Cal afegir el següent codi al `.Rmd`
+* 
+```{r, eval = FALSE}
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+-->
+```
+
+
+<!-- http://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission
+Sembla que has de fer un source i instal·lar-lo manualment
+-->
+
+## Exercici
+
+* Actualitzar el codi amb roxygen2
+* Afegir dades al package
+* Documentar les dades amb roxygen2
+* Crear el fitxer de documentació del package
+* __Extra__: Afegir un fitxer NEWS
+* __Extra__: Afegir una vignette simple
+
+## Incloure codi en JAVA
+
+* Bona referència: [helloJavaWorld package](http://cran.r-project.org/web/packages/helloJavaWorld/index.html)
+* Usar la llibreria [rJava](http://cran.r-project.org/web/packages/rJava/index.html)
+* Afegir els `.jar` files a `inst/java`
+* La documentació dels fitxers `java`
+* Afegir funció d'R `.onLoad`:
+```{r, eval = FALSE}
+.onLoad <- function(libname, pkgname) {
+  # Load Java dependencies (all jars inside the java subfolder)
+  .jpackage(name = pkgname, jars = "*")
+}
+```
+* Utilitzar funcions `.jnew` i `jcall` per cridar les funcions dels `.jar`
+
+## Incloure codi en C++
+
+* Al crear package seleccionar el tipus `w/ Rcpp`
+* Si tens algun dubte pregunta Aleix o Roc.
+
+## Package testhat
+
+<!-- * Alternatives RUnit i svUnit. -->
+
+* Detallat a l'article de [R-Journal](http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf)
+* Scripts en R i comencen per `test-`.
+* Guardar-los a la carpeta `tests/testthat`. 
+* Funcions `test_that` i `expect_XXX`.
+    * On XXX: `equal`, `error`, `is`, `true`, `null`, etc.
+* Per exemple:
+
+```{r, eval = FALSE}
+test_that("Funcionament correcte calQuadrat", {
+  expect_equal(calQuadrat(1), 1)
+  expect_equal(calQuadrat(2), 4)
+})
+
+test_that("Error quan passes no numeric arguments", {
+          expect_error(calQuadrat("a"))
+})
+
+```
+
+
+## Control de versions
+
+* [git](https://git-scm.com/)
+    * Dissenyat per Linus Torvalds
+    * Usat pel desenvolupament de Linux
+    * Fa copies només dels canvis
+    * Mantens tot l'històric de canvis
+* [github](https://github.com/): Servei al núvol de git
+* Per aprendre git i github curs on-line [Try-github](https://try.github.io/levels/1/challenges/1)
+* RStudio [integra git](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN), dins opcions de projectes, inclosos els packages.
+
+
+## Gracies
+
+### Lluís Ramon
+
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+<p><i class="fa fa-twitter fa-lg fa-fw"></i> <a href="https://twitter.com/LluisR_Tgn" target="_blank">@LluisR_Tgn</a></p>
+<p><i class="fa fa-github fa-lg fa-fw"></i> <a href="https://github.com/LluisRamon" target="_blank">@LluisRamon</a></p>
+<p><i class="fa fa-linkedin fa-lg fa-fw"></i> <a href="https://www.linkedin.com/in/lluisramon" target="_blank">lluisramon</a></p>
+
+<br>
